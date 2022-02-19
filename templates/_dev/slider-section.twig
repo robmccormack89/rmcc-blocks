@@ -1,0 +1,156 @@
+{#
+/**
+ * Block Name: Slider section
+ *
+ * This is the template that displays the Cover section block.
+ */
+#}
+
+{# 1. Extend the base block 
+
+  Extend the base block first...
+  
+#}
+
+{% extends "block.twig" %}
+
+{# 2. Import macros 
+
+  Import any relevant macros...
+  
+#}
+
+{% import "snippets.twig" as snippets %}
+{% import "scripts.twig" as scripts %}
+{% import "block-functions.twig" as block_functions %}
+
+{# 3. Set block-specific variables 
+
+  Set any block-specific variables here, from ACF fields or anything 
+  else. Objects inside a loop will include a template file & variables 
+  specific to the looped item will be set at the top of the 
+  subsequent file.
+  
+#}
+
+{# 4. Do the block markup, extending main 
+
+  Start doing the markup for the block, extending block_main from block.twig
+  
+#}
+
+{% block block_main %}
+  {% if fields.slides is not empty %}
+    <div id="slideshow_banner" class="swiper-container">
+      <div class="swiper-wrapper">
+        
+        {# the slideshow loop #}
+        {% for slide in fields.slides %}
+
+          {# 5. Set item-specific variables 
+
+            Set any template-specific variables here, from ACF fields or anything 
+            else. It is best to set these at the top of template when in a 
+            looped item.
+            
+          #}
+
+          {# img field #}
+          {% set the_image = null %}
+          {% set the_image_alt = null %}
+          {% if slide.img %}
+            {% set the_image = Image(slide.img).src %}
+            {% set the_image_alt = Image(slide.img).alt %}
+          {% endif %}
+          {% set img_src = the_image|resize(1920, 800)|default('https://picsum.photos/id/1' ~ loop.index ~ '/1920/800') %}
+          {% set img_alt = the_image_alt %}
+
+          {# align field #}
+          {% set align = slide.align|default('center') %}
+
+          {# height->img fields #}
+          {% set h = slide.height|default('large') %}
+          {% if h != 'fullscreen' %}
+            {% set h_class = ' uk-height-' ~ h %}
+            {% set coverheight = false %}
+          {% else %}
+            {% set h_class = ' home-cover-img' %}
+            {% set coverheight = true %}
+          {% endif %}
+          {% set img_class = 'block-img cover-img' ~ h_class %}
+
+          {# 6. Do the looped item markup 
+
+            Start doing the markup for the looped item...
+            
+          #}
+
+          <div class="swiper-slide">
+            <div class="uk-inline headercover">
+              
+              {# slide item image #}
+              {{ block_functions.block_img(is_preview, img_src, img_alt, {class: img_class, coverheight: coverheight}) }}
+              
+              {# slide item overlayed content #}
+              {% if slide.heading or slide.msg or (slide.btn_url and slide.btn_txt) %}
+                <div class="uk-position-cover uk-overlay uk-overlay-primary overlay-contained">
+                  <div class="uk-position-cover uk-container uk-container-large uk-flex uk-flex-middle uk-flex-{{ align|e('esc_html') }} uk-text-{{ align|e('esc_html') }}"> {# align field #}
+                    <div class="uk-width-large cover-content">
+                      
+                      {# heading field #}
+                      {% if slide.heading %}
+                        <h1>{{ slide.heading|e('esc_html') }}</h1>
+                      {% endif %}
+                      
+                      {# message field #}
+                      {% if slide.msg %}
+                        {% set slide_msg_class = (slide.btn_url and slide.btn_txt) ? 'uk-margin-medium-bottom' : 'uk-margin-remove-bottom' %}
+                        <hr class="uk-divider-small">
+                        <p class="uk-text-emphasis uk-text-lead {{ slide_msg_class }}">
+                          {{ slide.msg|e('esc_html') }}
+                        </p>
+                      {% endif %}
+                      
+                      {# button field/s #}
+                      {% if slide.btn_url and slide.btn_txt %}
+                        {% set slide_btn_class = 'uk-button uk-button-default uk-button-large scroll' %}
+                        {{ block_functions.block_link(is_preview, slide.btn_url, slide.btn_txt, {class: slide_btn_class}) }}
+                      {% endif %}
+                      
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              
+            </div>
+          </div>
+
+        {% endfor %}
+        
+      </div>
+      
+      {# the slideshow pagination #}
+      {% if fields.slides|length > 1 %}
+        <div class="swiper-pagination"></div>
+      {% endif %}
+      
+    </div>
+  {% else %}
+    {{ block_functions.preview_text(is_preview, 'No slides have been added yet...') }}
+  {% endif %}
+{% endblock %}
+
+{# 5. Do the block-specific scripts 
+
+  Do any block-specific scripts, extending block_scripts from block.twig
+  
+#}
+
+{% block block_scripts %}
+  {% if fields.slides|length > 1 %}
+    {% set slides_pagi = '.swiper-pagination' %}
+  {% else %}
+    {% set slides_pagi = false %}
+  {% endif %}
+  {{ block_functions.block_swiper(is_preview, 'slider_swiper', '#slideshow_banner', {centeredSlides: true, autoplay: true, pagination: slides_pagi, pagination_type: 'progressbar'}) }}
+{% endblock %}

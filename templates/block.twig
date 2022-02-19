@@ -1,0 +1,114 @@
+{# This is the base template for acf gutenberg blocks 
+
+  Templates for specific blocks should extend this template & block_main 
+  
+#}
+
+{# block styles 
+
+#}
+
+{% block block_styles %}
+  <style>
+    .uk-height-small {
+      height: 150px!important;
+    }
+    .uk-height-medium {
+      height: 300px!important;
+    }
+    .uk-height-large {
+      height: 450px!important;
+    }
+  </style>
+  {% block _block_styles %}
+  {% endblock %}
+{% endblock %}
+
+{% block block_preloads %}
+  {% if is_preview %}
+    <link rel="preconnect" href="https://picsum.photos">
+    <link rel="dns-prefetch" href="https://picsum.photos">
+    <link rel="preconnect" href="https://i.picsum.photos">
+    <link rel="dns-prefetch" href="https://i.picsum.photos">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {% endif %}
+{% endblock %}
+
+{# block fields 
+
+#}
+
+{# align #}
+{% if not is_preview %}
+  {# set align_container = 'uk-container' #}
+  {% set align_container = '' %}
+  {% if block.align == 'wide' %}
+    {% set align_container = 'uk-container uk-container-xlarge' %}
+    {% set block_break = 'uk-container-break' %}
+  {% elseif block.align == 'full' %}
+    {% set align_container = 'uk-container uk-container-expand uk-padding-remove-horizontal' %}
+    {% set block_break = 'uk-container-break' %}
+  {% elseif block.align == 'left' %}
+    {% set align_style = 'style="padding-left:0;margin-left:0;"' %}
+  {% elseif block.align == 'right' %}
+    {% set align_style = 'style="padding-right:0;margin-right:0;"' %}
+  {% endif %}
+{% endif %}
+
+{# align_content #}
+{% if block.align_content %}
+  {# align_content : simple (for use with flex -> top, middle, bottom) #}
+  {% set align_content = (block.align_content == 'center') ? 'middle' : block.align_content  %}
+
+  {# align_content : matrix (for use with position) #}
+  {% if block.align_content == 'top left' %}
+    {% set align_content_matrix_pos = 'uk-position-top-left' %}
+  {% elseif block.align_content == 'top center' %}
+    {% set align_content_matrix_pos = 'uk-position-top-center	' %}
+  {% elseif block.align_content == 'top right' %}
+    {% set align_content_matrix_pos = 'uk-position-top-right' %}
+  {% elseif block.align_content == 'center left' %}
+    {% set align_content_matrix_pos = 'uk-position-center-left' %}
+  {% elseif block.align_content == 'center center' %}
+    {% set align_content_matrix_pos = 'uk-position-center' %}
+  {% elseif block.align_content == 'center right' %}
+    {% set align_content_matrix_pos = 'uk-position-center-right' %}
+  {% elseif block.align_content == 'bottom left' %}
+    {% set align_content_matrix_pos = 'uk-position-bottom-left' %}
+  {% elseif block.align_content == 'bottom center' %}
+    {% set align_content_matrix_pos = 'uk-position-bottom-center' %}
+  {% elseif block.align_content == 'bottom right' %}
+    {% set align_content_matrix_pos = 'uk-position-bottom-right' %}
+  {% endif %}
+{% endif %}
+
+{# full_height img #}
+{% set full_height_img_class = block.full_height ? 'cover-img home-cover-img' : 'cover-img' %}
+
+
+{# img fields : defaults
+
+#}
+
+{% set the_image = null %}
+{% set the_image_alt = null %}
+
+{# The block wrapper markup
+
+#}
+
+<div class="{{ block_break }}">
+  <div id="{{ block.id }}" class="{{ align_container }} {{ block.className }}" {{ align_style }}>
+    {% block block_main %}
+      Sorry, nothing to display here...
+    {% endblock %}
+  </div>
+</div>
+
+{# block scripts 
+
+#}
+
+{% block block_scripts %}
+{% endblock %}

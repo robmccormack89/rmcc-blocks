@@ -1,0 +1,80 @@
+{#
+/**
+ * Block Name: Video popup section
+ *
+ * This is the template that displays the Video popup section block.
+ */
+#}
+
+{# extend & imports 
+
+#}
+
+{% extends "block.twig" %}
+{% import "block-functions.twig" as block_functions %}
+{% import "block-icons.twig" as block_icons %}
+
+{# img fields 
+
+#}
+
+{% set h = (block.full_height) ? '800' : '500' %}
+{% if fields.video_img %}
+  {% set the_image = Image(fields.video_img).src %}
+  {% set the_image_alt = Image(fields.video_img).alt %}
+{% endif %}
+{% set img_src = the_image|resize(1920, h)|default('https://picsum.photos/id/' ~ default_theme_img_id ~ '/1920/' ~ h) %}
+{% set img_alt = the_image_alt %}
+
+{# extended styles block 
+
+#}
+
+{% block _block_styles %}
+  <style>
+    .video-container__play svg {
+      width: 80px;
+      height: 80px;
+      fill: transparent;
+      stroke: #fff;
+    }
+  </style>
+{% endblock %}
+
+{# main block 
+
+#}
+
+{% block block_main %}
+  <section class="uk-background-primary uk-text-center">
+    
+    <div class="uk-inline">
+      
+      {# block img #}
+      {{ block_functions.block_img(is_preview, img_src, img_alt, {class: full_height_img_class, coverheight: block.full_height}) }}
+      
+      {# play button with video_embed #}
+      {% if fields.video_embed %}
+        <div class="uk-overlay-primary uk-position-cover">
+          <div class="{{ align_content_matrix_pos }}">
+            {{ block_functions.block_link_open(is_preview, '#modal-media-video', {class: 'video-container__play', attr: 'uk-toggle'}) }}
+              {{ block_icons.youtube_btn_icon }}
+            {{ block_functions.block_link_close(is_preview) }}
+          </div>
+        </div>
+      {% endif %}
+      
+    </div>
+    
+    {# iframe modal with video_embed #}
+    {% if fields.video_embed and not is_preview %}
+      <div id="modal-media-video" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
+          <button class="uk-modal-close-outside" type="button" uk-close></button>
+          {{ functions.iframe(fields.video_embed, {w: '1920', h: '800'}) }} {# iframe using youtube_embed_url field #}
+        </div>
+      </div>
+    {% endif %}
+    
+  </section>
+{% endblock %}

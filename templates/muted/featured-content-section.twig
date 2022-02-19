@@ -1,0 +1,88 @@
+{#
+/**
+ * Block Name: Featured content section
+ *
+ * This is the template that displays the Featured content section block.
+ */
+#}
+
+{# extend & imports 
+
+#}
+
+{% extends "block.twig" %}
+{% import "block-functions.twig" as block_functions %}
+
+{# block fields 
+
+#}
+
+{% set flex_first_class = (fields.fcontent_layout == 'right') ? 'uk-flex-first' %}
+
+{# defaults 
+
+  Lorem ipsum dolor
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  Learn more
+  https://picsum.photos/id/' ~ default_theme_img_id ~ '/720/500'
+  #
+
+#}
+
+{# text fields #}
+{% set heading = fields.fcontent_heading|default(post.title) %}
+{% set msg = fields.fcontent_msg|default(post.preview.length(22).read_more('')) %}
+{% set btn_txt = fields.fcontent_btn_txt|default(post.title|u.truncate(19, '...')) %}
+{% set btn_url = fields.fcontent_btn_url|default(post.link) %}
+
+{# img fields #}
+{% if fields.fcontent_img %}
+  {% set the_image = Image(fields.fcontent_img).src|resize(720, 500) %}
+  {% set the_image_alt = Image(fields.fcontent_img).alt %}
+{% endif %}
+{% set img_src = the_image|default(post.thumbnail.src|resize(720, 500)|default('https://picsum.photos/id/' ~ default_theme_img_id ~ '/720/500')) %}
+{% set img_alt = the_image_alt|default(post.thumbnail.alt) %}
+
+{# main block 
+
+#}
+
+{% block block_main %}
+  <div class="featured-item-section uk-section uk-section-small uk-section-muted">
+    <div class="uk-container">
+      
+      {# featured content item #}
+      <div class="uk-grid-match uk-flex uk-flex-{{ align_content|e('esc_html') }} uk-grid-collapse uk-background-default uk-text-{{ block.align_text|e('esc_html') }} uk-box-shadow-medium uk-grid" uk-grid>
+        
+        {# featured content item : imgae (left) #}
+        <div class="uk-width-3-5@m">
+          {{ block_functions.block_img(is_preview, img_src, img_alt, {w: '720', h: '500'}) }}
+        </div>
+        
+        {# featured content item : content (right) #}
+        <div class="uk-padding-large uk-width-2-5@m {{ flex_first_class }}">
+          
+          {# block heading #}
+          {% if heading %}
+            <h3>{{ heading|e('esc_html') }}</h3>
+          {% endif %}
+          
+          {# block message #}
+          {% if msg %}
+            <p class="uk-margin-small">{{ msg|e('esc_html') }}</p>
+          {% endif %}
+          
+          {# block btn (text & url) #}
+          {% if btn_txt and btn_url %}
+            <div class="uk-margin-top">
+              {{ block_functions.block_link(is_preview, btn_url, btn_txt, {class: 'feature-link uk-text-uppercase uk-text-emphasis'}) }}
+            </div>
+          {% endif %}
+          
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+{% endblock %}
