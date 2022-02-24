@@ -41,8 +41,7 @@
 {% macro block_swiper(is_preview, key = 'my_swiper', target = '#my_swiper') %}
   {% set args = varargs[0] %}
   <script type='text/javascript'>
-    jQuery(function(){
-      var {{ key }} = new Swiper('{{ target }}', {
+    var {{ key }} = new Swiper('{{ target }}', {
         
         {% if args.centeredSlides %}
           centeredSlides: true,
@@ -91,7 +90,6 @@
         {% endif %}
         
       });
-    });
   </script>
 {% endmacro %}
 

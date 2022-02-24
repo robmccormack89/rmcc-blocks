@@ -1,0 +1,54 @@
+{#
+/**
+ * Block Name: Featured content section
+ *
+ * This is the template that displays the Featured content section block.
+ */
+#}
+
+{% extends "featured-muted.twig" %}
+{% import "block-functions.twig" as block_functions %}
+
+{# _block blocks (from featured-muted.twig) 
+
+  new vars must be declared INSIDE the twig blocks where relevenat
+
+#}
+
+{% block _block_left %}
+  {% set img_src = block_img.src|resize(720, 500)|default(post.thumbnail.src|resize(720, 500)|default('https://picsum.photos/id/' ~ default_theme_img_id ~ '/720/500')) %}
+  {% set img_alt = block_img.alt|default(post.thumbnail.alt) %}
+
+  <div class="uk-width-3-5@m">
+    {{ block_functions.block_img(is_preview, img_src, img_alt, {w: '720', h: '500'}) }}
+  </div>
+{% endblock %}
+
+{% block _block_heading %}
+  {% set heading = heading|default(post.title) %}
+  
+  {% if heading %}
+    <h3>{{ heading|e('esc_html') }}</h3>
+  {% endif %}
+{% endblock %}
+
+{% block _block_message %}
+  {% set message = message|default(post.preview.length(22).read_more('')) %}
+
+  {% if message %}
+    <p class="uk-margin-small">
+      {{ message|e('wp_kses_post') }}
+    </p>
+  {% endif %}
+{% endblock %}
+
+{% block _block_button %}
+  {% set button_text = button_text|default(post.title|u.truncate(19, '...')) %}
+  {% set button_url = button_url|default(post.link) %}
+
+  {% if button_text and button_url %}
+    <div class="uk-margin-top">
+      {{ block_functions.block_link(is_preview, button_url, button_text, {class: 'feature-link uk-text-uppercase uk-text-emphasis'}) }}
+    </div>
+  {% endif %}
+{% endblock %}

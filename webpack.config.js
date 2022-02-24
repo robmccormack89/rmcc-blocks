@@ -20,7 +20,7 @@ module.exports = {
   // sets mode to miniied production output, the entry file and the path & filename to output file
   mode: "production",
   entry: {
-    base: './assets/js/srcs/index.js',
+    blocks: './assets/js/srcs/index.js',
   },
   output: {
     filename: '[name].js',

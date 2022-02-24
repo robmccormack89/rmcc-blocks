@@ -1,7 +1,8 @@
-node_modules/
-.sass-cache/
-compilation_cache/
 .git
 .ftpconfig
+.sass-cache/
+compilation_cache/
+node_modules/
 package-lock.json
 composer.lock
+todo

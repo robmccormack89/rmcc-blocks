@@ -1,0 +1,47 @@
+{#
+/**
+ * Block Name: CTA section
+ *
+ * This is the template that displays the CTA section block.
+ */
+#}
+
+{% extends "block.twig" %}
+{% import "block-functions.twig" as block_functions %}
+
+{% block block_content %}
+
+  {# rmcc-block vars (inside block_content) 
+
+  #}
+  
+  {% set container_size = (align_text == 'center') ? 'xsmall' : 'large'  %}
+  
+  {# rmcc-block markup 
+
+  #}
+  
+  <div class="uk-section uk-section-primary" style="background-color: {{ bg_colour|e('esc_html') }}">
+    <div class="uk-text-{{ align_text|e('esc_html') }} uk-container uk-container-{{ container_size|e('esc_html') }}">
+      
+      {# block heading #}
+      {% if heading %}
+        <h2 class="uk-h3">{{ heading|e('esc_html') }}</h2>
+      {% endif %}
+      
+      {# block message #}
+      {% if message %}
+        <p>
+          {{ message|e('wp_kses_post') }}
+        </p>
+      {% endif %}
+      
+      {# block btn (text & url) #}
+      {% if button_text and button_url %}
+        {{ block_functions.block_link(is_preview, button_url, button_text, {class: 'feature-link uk-text-uppercase scroll'}) }}
+      {% endif %}
+      
+    </div>
+  </div>
+  
+{% endblock %}

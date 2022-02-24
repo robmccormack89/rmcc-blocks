@@ -1,0 +1,36 @@
+{% extends '_1st-post.twig' %}
+{% import "block-functions.twig" as block_functions %}
+
+{% block _inner_post %}
+  <div class="post">
+    <div class="uk-child-width-1-2@m uk-grid uk-flex uk-flex-middle uk-grid" uk-grid>
+      
+      {# img #}
+      <div>
+        {% set img3 = post.thumbnail.src|resize(720, 509)|default('https://picsum.photos/id/' ~ (loop.index + 2) ~ '/720/509') %}
+        {{ block_functions.block_img(is_preview, img3, post.thumbnail.alt, {w: '720', h: '509'}) }} {# post img #}
+      </div>
+      
+      {# title, content & btn - right #}
+      <div>
+        
+        {# title linked #}
+        {{ block_functions.block_link_open(is_preview, post.link, {class: 'uk-link-reset'}) }}
+          <h3 class="uk-h4 uk-margin-remove">{{ post.title }}</h3>
+        {{ block_functions.block_link_close(is_preview) }}
+        
+        {# excerpt #}
+        <p class="uk-margin-small">
+          {{ post.preview.length(12).force.read_more('') }}
+        </p>
+        
+        {# link/btn #}
+        <div class="uk-margin-small-top">
+          {{ block_functions.block_link(is_preview, post.link, 'Read more', {class: 'feature-link uk-text-uppercase uk-text-emphasis'}) }}
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+{% endblock %}

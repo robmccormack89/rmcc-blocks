@@ -1,0 +1,60 @@
+{#
+/**
+ * Block Name: Contact section
+ *
+ * This is the template that displays the Contact section block.
+ */
+#}
+
+{% extends "block.twig" %}
+{% import "block-functions.twig" as block_functions %}
+
+{% block block_content %}
+
+  {# rmcc-block vars (inside block_content) 
+
+  #}
+  
+  {% set img_src = _block_img.src|resize(1080, 675)|default('https://picsum.photos/id/' ~ default_theme_img_id ~ '/1080/675') %}
+  {% set img_alt = _block_img.alt %}
+  
+  {# rmcc-block markup 
+
+  #}
+  
+  <div class="uk-child-width-1-2@m uk-grid-match uk-grid-collapse uk-background-muted uk-text-{{ align_text|e('esc_html') }} uk-grid" uk-grid>
+      
+    {# contact block - content #}
+    <div class="uk-flex uk-flex-{{ align_content|e('esc_html') }}">
+      <div class="uk-padding-large">
+        
+        {# block heading #}
+        {% if heading %}
+          <h3>{{ heading|e('esc_html') }}</h3>
+        {% endif %}
+        
+        {# block message #}
+        {% if message %}
+          <p class="uk-margin-small">
+            {{ message|e('wp_kses_post') }}
+          </p>
+        {% endif %}
+        
+        {# block btn (text & url) #}
+        {% if button_text and button_url %}
+          <div class="uk-margin-top">
+            {{ block_functions.block_link(is_preview, button_url, button_text, {class: 'feature-link uk-text-uppercase uk-text-emphasis'}) }}
+          </div>
+        {% endif %}
+        
+      </div>
+    </div>
+    
+    {# contact block - img #}
+    <div class="uk-flex {{ first_class }}">
+      {{ block_functions.block_img(is_preview, img_src, img_alt, {class: 'cover-img', w: '1080', h: '675'}) }}
+    </div>
+      
+  </div>
+  
+{% endblock %}
