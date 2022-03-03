@@ -17,7 +17,7 @@
 #}
 
 {% block _block_button %}
-  {% set button_text = button_text|default({{ snippets.view_gallery() }}) %}
+  {% set button_text = button_text|default( snippets.view_gallery() ) %}
 
   {% if gallery %}
     <div class="uk-margin-top">

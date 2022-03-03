@@ -6,7 +6,7 @@ use Timber\PostQuery;
 
 /*
 
-  Blocks: Adds some ACF Blocks to the gutenberg editor & renders them with Twig/Timber...
+  Blocks: Adds some ACF Blocks to the gutenberg editor & renders them with Twig/Timber...//
   
   How to use Blocks: 
 
