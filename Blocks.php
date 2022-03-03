@@ -6,7 +6,7 @@ use Timber\PostQuery;
 
 /*
 
-  Blocks: Adds some ACF Blocks to the gutenberg editor & renders them with Twig/Timber
+  Blocks: Adds some ACF Blocks to the gutenberg editor & renders them with Twig/Timber...
   
   How to use Blocks: 
 
@@ -41,8 +41,8 @@ array_unshift(
   'inc/acf/blocks/views/featured-muted/featured-gallery-section',
     
   // blocks not using any ACF fields*****
-  'inc/acf/blocks/views/no-acf',
-  'inc/acf/blocks/views/no-acf/blog-posts-section',
+  // 'inc/acf/blocks/views/no-acf',
+  // 'inc/acf/blocks/views/no-acf/blog-posts-section',
     
   // blocks using repeater fields*****
   'inc/acf/blocks/views/repeater',
@@ -456,37 +456,37 @@ class Blocks {
     No acf fields used
     */
     
-    acf_register_block(array( // blog posts section 
-      
-      // *required
-      'name' => 'blog_posts',
-      'title' => 'Blog posts section',
-      
-      // the callback function
-      'render_callback' => array($this, 'blog_posts_render_callback'),
-      
-      // what block settings does this block allow
-      'supports' => array(
-        'align' => true, 
-        'align_text' => false, 
-        'align_content' => false, 
-        'full_height' => false, 
-        'mode' => false
-      ),
-      
-      // the defaults for various block settings
-      'align' => '',
-      
-      // *optional
-      '__description' => 'Requires some published posts.',
-      
-      // category & icon
-      'category' => 'design',
-      'icon' => 'list-view',
-      
-      // keywords by which to search for the block
-      'keywords' => array('blog', 'posts'),
-    ));
+    // acf_register_block(array( // blog posts section 
+    // 
+    //   // *required
+    //   'name' => 'blog_posts',
+    //   'title' => 'Blog posts section',
+    // 
+    //   // the callback function
+    //   'render_callback' => array($this, 'blog_posts_render_callback'),
+    // 
+    //   // what block settings does this block allow
+    //   'supports' => array(
+    //     'align' => true, 
+    //     'align_text' => false, 
+    //     'align_content' => false, 
+    //     'full_height' => false, 
+    //     'mode' => false
+    //   ),
+    // 
+    //   // the defaults for various block settings
+    //   'align' => '',
+    // 
+    //   // *optional
+    //   '__description' => 'Requires some published posts.',
+    // 
+    //   // category & icon
+    //   'category' => 'design',
+    //   'icon' => 'list-view',
+    // 
+    //   // keywords by which to search for the block
+    //   'keywords' => array('blog', 'posts'),
+    // ));
       
   }
 
