@@ -7,29 +7,12 @@
 #}
 
 {% extends "block.twig" %}
-{% import "block-functions.twig" as block_functions %}
+{% import "block-functions.twig" as functions %}
 {% import "block-snippets.twig" as snippets %}
 
-{% block block_styles %}
-  <style>
-    .testimonials__star {
-      margin: 0 2px;
-      color: #eeaf2e;
-    }
-  </style>
-{% endblock %}
-
 {% block block_content %}
-
-  {# rmcc-block vars (inside block_content) 
-
-  #}
   
   {% set wrap_style = (fields.testimonials|length > 1) ? 'style="padding-bottom:30px;"' %}
-
-  {# rmcc-block markup 
-
-  #}
 
   {% if fields.testimonials is not empty %}
     <section class="uk-container uk-container-xsmall">
@@ -50,12 +33,12 @@
       </div>
     </section>
   {% else %}
-    {{ block_functions.preview_text(is_preview, snippets.no_testimonials()) }}
+    {{ functions.preview_text(is_preview, snippets.no_testimonials()) }}
   {% endif %}
   
 {% endblock %}
 
 {% block block_scripts %}
   {% set _pagination = (fields.testimonials|length > 1) ? '.swiper-pagination' : false %}
-  {{ block_functions.block_swiper(is_preview, 'tesimonials_swiper', '#slideshow_tesimonials', {autoplay: true, slidesPerView: 1, spaceBetween: 0, pagination: _pagination, pagination_dynamicBullets: true}) }}
+  {{ functions.block_swiper(is_preview, 'tesimonials_swiper', '#slideshow_tesimonials', {autoplay: true, slidesPerView: 1, spaceBetween: 0, pagination: _pagination, pagination_dynamicBullets: true}) }}
 {% endblock %}

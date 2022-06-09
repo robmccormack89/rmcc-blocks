@@ -1,18 +1,4 @@
-{% import "block-functions.twig" as block_functions %}
-
-{# item fields 
-
-  i : the loop item index number (for image resize & placeholder)
-  n : items count (for image's resize & placeholder, & item width class)
-  w : width (for image resize & placeholder)
-  
-  text : text field defaults to post.title
-  link : url field defaults to post.link defaults to '#'
-  
-  the_image -> img_src : img field defaults to post.thumbnail.src defaults to placeholder
-  the_image -> img_alt : img field defaults to post.thumbnail.alt
-
-#}
+{% import "block-functions.twig" as functions %}
 
 {% set _i = loop.index %}
 {% set n = items|length %}
@@ -23,26 +9,22 @@
 {% set img_src = _the_image.src|resize(_w, 500, 'center')|default(item.post.thumbnail.src|resize(_w, 500, 'center')|default('https://picsum.photos/id/1' ~ _i ~ '/' ~ _w ~ '/500')) %}
 {% set img_alt = _the_image.alt|default(item.post.thumbnail.alt) %}
 
-{# item markup 
-
-#}
-
-{{ block_functions.block_link_open(is_preview, url, {class: 'uk-width-1-' ~ n ~ '@m'}) }}
+{{ functions.block_link_open(is_preview, url, {class: 'uk-width-1-' ~ n ~ '@m'}) }}
   <div class="uk-inline uk-light">
     <div class="uk-inline-clip uk-transition-toggle" tabindex="0">
       
       {# featured page item image #}
-      {{ block_functions.block_img(is_preview, img_src, img_alt, {class: 'uk-transition-scale-up uk-transition-opaque uk-img'}) }}
+      {{ functions.block_img(is_preview, img_src, img_alt, {class: 'uk-transition-scale-up uk-transition-opaque uk-img'}) }}
       
       {# featured page item - overlayed content (title) #}
       {% if heading %}
-        <div class="uk-overlay-secondary uk-position-cover">
+        <div class="uk-over uk-overlay-primary uk-position-cover">
           <div class="uk-padding {{ align_content_pos }}">
-            <span class="feature-link uk-text-uppercase uk-text-emphasis">{{ heading|e('esc_html') }}</span>
+            <span class="uk-button uk-button-text uk-text-bolder">{{ heading|e('esc_html') }}</span>
           </div>
         </div>
       {% endif %}
       
     </div>
   </div>
-{{ block_functions.block_link_close(is_preview) }}
+{{ functions.block_link_close(is_preview) }}

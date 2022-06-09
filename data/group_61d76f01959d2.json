@@ -27,28 +27,9 @@
             "mime_types": ""
         },
         {
-            "key": "field_61d76f01c08f9",
-            "label": "Heading",
-            "name": "heading",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "maxlength": "",
-            "rows": 1,
-            "new_lines": ""
-        },
-        {
-            "key": "field_61d76f01c0ce3",
-            "label": "Message",
-            "name": "msg",
+            "key": "field_620e46bf11699",
+            "label": "Bottom message",
+            "name": "bottom_msg",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -62,13 +43,13 @@
             "placeholder": "",
             "maxlength": "",
             "rows": 4,
-            "new_lines": "br"
+            "new_lines": ""
         },
         {
-            "key": "field_61d76f01c10ee",
-            "label": "Button text",
-            "name": "btn_txt",
-            "type": "text",
+            "key": "field_626065c11af7d",
+            "label": "Overlay",
+            "name": "overlay",
+            "type": "radio",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -77,46 +58,16 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_61d76f99c44cc",
-            "label": "Button link",
-            "name": "btn_url",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
+            "choices": {
+                "light": "Light",
+                "dark": "Dark"
             },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_620e46bf11699",
-            "label": "Bottom message",
-            "name": "bottom_msg",
-            "type": "wysiwyg",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "basic",
-            "media_upload": 0,
-            "delay": 0
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "light",
+            "layout": "horizontal",
+            "return_format": "value",
+            "save_other_choice": 0
         }
     ],
     "location": [
@@ -137,5 +88,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1645547800
+    "modified": 1650593881
 }

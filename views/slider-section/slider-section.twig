@@ -7,7 +7,7 @@
 #}
 
 {% extends "block.twig" %}
-{% import "block-functions.twig" as block_functions %}
+{% import "block-functions.twig" as functions %}
 {% import "block-snippets.twig" as snippets %}
 
 {% block block_content %}
@@ -28,11 +28,11 @@
       
     </div>
   {% else %}
-    {{ block_functions.preview_text(is_preview, snippets.no_slides()) }}
+    {{ functions.preview_text(is_preview, snippets.no_slides()) }}
   {% endif %}
 {% endblock %}
 
 {% block block_scripts %}
   {% set _pagination = (fields.slides|length > 1) ? '.swiper-pagination' : false %}
-  {{ block_functions.block_swiper(is_preview, 'slider_swiper', '#slideshow_banner', {centeredSlides: true, autoplay: true, pagination: _pagination, pagination_type: 'progressbar'}) }}
+  {{ functions.block_swiper(is_preview, 'slider_swiper', '#slideshow_banner', {centeredSlides: true, autoplay: true, pagination: _pagination, pagination_type: 'progressbar'}) }}
 {% endblock %}

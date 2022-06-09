@@ -34,27 +34,16 @@ array_unshift(
   
   // views
   'inc/acf/blocks/views',
-  
-  // featured-muted style (featured content card on muted bg)
-  'inc/acf/blocks/views/featured-muted',
-  'inc/acf/blocks/views/featured-muted/featured-content-section',
-  'inc/acf/blocks/views/featured-muted/featured-gallery-section',
     
   // blocks not using any ACF fields*****
   // 'inc/acf/blocks/views/no-acf',
   // 'inc/acf/blocks/views/no-acf/blog-posts-section',
     
   // blocks using repeater fields*****
-  'inc/acf/blocks/views/repeater',
-  'inc/acf/blocks/views/repeater/featured-items-section',
-  
-  // blocks with repeater fields using swiper*****
-  'inc/acf/blocks/views/repeater/swiper',
-  'inc/acf/blocks/views/repeater/swiper/slider-section',
-  'inc/acf/blocks/views/repeater/swiper/testimonials-section',
-    
-  // simple blocks (simple fields like: image, heading, message, button text & url etc...)
-  'inc/acf/blocks/views/simple',
+  'inc/acf/blocks/views/featured-items-row-section',
+  'inc/acf/blocks/views/slider-section',
+  'inc/acf/blocks/views/testimonials-section',
+  'inc/acf/blocks/views/buttons',
 );
 
 class Blocks {
@@ -63,6 +52,8 @@ class Blocks {
 
     add_action('acf/init', array($this, 'register_blocks'));
     add_action('enqueue_block_assets', array($this, 'acf_blocks_editor_scripts')); // use 'enqueue_block_editor_assets' for backend-only
+    
+    add_filter('style_loader_tag', array($this, 'preconnects_filter'), 10, 2);
     
   }
   
@@ -123,370 +114,303 @@ class Blocks {
     );
     
     /*
-    Simple blocks
+    Sections (with inners)
     */
     
-    acf_register_block(array( // contact section 
+    acf_register_block(array( // half & half section 
       
       // *required
-      'name' => 'contact_section',
-      'title' => 'Contact section',
+      'name' => 'half_and_half_section',
+      'title' => 'Half & Half section',
       
       // the callback function
-      'render_callback' => array($this, 'contact_section_render_callback'),
+      'render_callback' => array($this, 'half_and_half_section_render_callback'),
       
       // what block settings does this block allow
       'supports' => array(
-        'align' => true, 
-        'align_text' => true, 
+        'align' => array('full', 'wide', 'center', ''), 
+        'align_text' => false,
         'align_content' => true, 
         'full_height' => false, 
-        'mode' => false
+        // 'mode' => false,
+        'jsx' => true
       ),
       
       // the defaults for various block settings
       'align' => 'full',
-      'align_text' => 'center',
       'align_content' => 'center',
-      
-      // *optional
-      '__description' => 'All fields are optional',
       
       // category & icon
       'category' => 'design',
       'icon' => 'align-pull-right',
       
       // keywords by which to search for the block
-      'keywords' => array('contact', 'section'),
+      'keywords' => array('half', 'section', 'rmcc'),
       
     ));
     
     acf_register_block(array( // cover section 
-      
+    
       // *required
       'name' => 'cover_section',
       'title' => 'Cover section',
-      
+    
       // the callback function
       'render_callback' => array($this, 'cover_section_render_callback'),
-      
+    
       // what block settings does this block allow
       'supports' => array(
-        'align' => true,
-        'align_text' => true,
-        'align_content' => true,
+        'align' => array('full', 'wide', 'center', ''), 
+        'align_text' => false,
+        'align_content' => false,
         'full_height' => true,
-        'mode' => false,
-        'jsx' => false
+        // 'mode' => false,
+        'jsx' => true
       ),
-      
+    
       // the defaults for various block settings
       'align' => 'full',
-      'align_text' => 'center',
-      'align_content' => 'center',
       'full_height' => true,
       'mode' => 'preview',
-      
-      // *optional
-      '__description' => 'All fields are optional',
-      
+    
       // category & icon
       'category' => 'design',
       'icon' => 'cover-image',
-      
+    
       // keywords by which to search for the block
-      'keywords' => array('cover', 'section'),
-      
+      'keywords' => array('cover', 'section', 'rmcc'),
+    
     ));
     
     acf_register_block(array( // cta section 
-      
+    
       // *required
       'name' => 'cta_section',
-      'title' => 'CTA section',
-      
+      'title' => 'Call-to-action section',
+    
       // the callback function
       'render_callback' => array($this, 'cta_section_render_callback'),
-      
+    
       // what block settings does this block allow
       'supports' => array(
-        'align' => true,
-        'align_text' => true, 
-        'align_content' => false, 
-        'full_height' => false, 
-        'mode' => false,
-        'jsx' => false // enable for when using <InnerBlocks /> component
+        'align' => array('full', 'wide', 'center', ''), 
+        'align_text' => false,
+        'align_content' => false,
+        'full_height' => false,
+        // 'mode' => false,
+        'jsx' => true
       ),
-      
+    
       // the defaults for various block settings
       'align' => 'full',
-      'align_text' => 'center',
-      
-      // *optional
-      '__description' => 'All fields are optional',
-      
+    
       // category & icon
       'category' => 'design', // what category the lock will be in 
       'icon' => 'editor-aligncenter', // icon used for the block (dashicons)
-      
+    
       // keywords by which to search for the block
-      'keywords' => array('cta', 'section'),
-      
+      'keywords' => array('cta', 'call', 'to', 'action', 'section', 'rmcc'),
+    
     ));
     
-    acf_register_block(array( // video section 
-      
+    acf_register_block(array( // Highlight card section 
+    
       // *required
-      'name' => 'video_popup_section',
-      'title' => 'Video popup section',
-      
+      'name' => 'highlight_card_section',
+      'title' => 'Highlight card section',
+    
       // the callback function
-      'render_callback' => array($this, 'video_popup_section_render_callback'),
-      
+      'render_callback' => array($this, 'highlight_card_section_render_callback'),
+    
       // what block settings does this block allow
       'supports' => array(
-        'align' => true, 
+        'align' => array('full', 'wide', 'center', ''), 
         'align_text' => false, 
-        'align_content' => 'matrix', 
-        'full_height' => true, 
-        'mode' => false
-      ),
-      
-      // the defaults for various block settings
-      'align' => 'full',
-      'align_content' => 'center center',
-      
-      // *optional
-      '__description' => 'All fields are optional',
-      
-      // category & icon
-      'category' => 'design',
-      'icon' => 'youtube',
-      
-      // keywords by which to search for the block
-      'keywords' => array('video', 'popup'),
-      
-    ));
-    
-    /*
-    layout: featured content card on muted background
-    */
-    
-    acf_register_block(array( // Featured gallery section: gallery field. uses lightgallery 
-      
-      // *required
-      'name' => 'featured_gallery',
-      'title' => 'Featured gallery section',
-      
-      // the callback function
-      'render_callback' => array($this, 'featured_gallery_render_callback'),
-      
-      // what block settings does this block allow
-      'supports' => array(
-        'align' => true, 
-        'align_text' => true, 
         'align_content' => true, 
         'full_height' => false, 
-        'mode' => false
+        // 'mode' => false,
+        'jsx' => true
       ),
-      
-      // the defaults for various block settings
-      'align' => 'full',
-      'align_text' => 'center',
-      'align_content' => 'center',
-      
-      // *optional
-      '__description' => 'All fields are optional.',
-      
-      // category & icon
-      'category' => 'design',
-      'icon' => 'format-gallery',
-      
-      // keywords by which to search for the block
-      'keywords' => array('featured', 'content'),
-      
-    ));
     
-    acf_register_block(array( // Featured content section: post object field 
-      
-      // *required
-      'name' => 'featured_content',
-      'title' => 'Featured content section',
-      
-      // the callback function
-      'render_callback' => array($this, 'featured_content_render_callback'),
-      
-      // what block settings does this block allow
-      'supports' => array(
-        'align' => true, 
-        'align_text' => true, 
-        'align_content' => true, 
-        'full_height' => false, 
-        'mode' => false
-      ),
-      
       // the defaults for various block settings
       'align' => 'full',
-      'align_text' => 'center',
+      'align_text' => 'left',
       'align_content' => 'center',
-      
-      // *optional
-      '__description' => 'All fields are optional. Use the custom fields to override the selected featured content, or instead of it.',
-      
+    
       // category & icon
       'category' => 'design',
       'icon' => 'align-center',
-      
+    
       // keywords by which to search for the block
-      'keywords' => array('featured', 'content'),
-      
+      'keywords' => array('highlight', 'card', 'section', 'rmcc'),
+    
     ));
     
-    /*
-    repeater fields
-    */
+    // /*
+    // Swiper & Repeater sections
+    // */
     
-    acf_register_block(array( // Featured items section 
-      
-      // *required
-      'name' => 'featured_items',
-      'title' => 'Featured items section',
-      
-      // the callback function
-      'render_callback' => array($this, 'featured_items_render_callback'),
-      
-      // what block settings does this block allow
-      'supports' => array(
-        'align' => true, 
-        'align_text' => false, 
-        'align_content' => 'matrix', 
-        'full_height' => false, 
-        'mode' => false
-      ),
-      
-      // the defaults for various block settings
-      'align' => 'full',
-      'align_content' => 'center center',
-      
-      // *optional
-      '__description' => '',
-      
-      // category & icon
-      'category' => 'design',
-      'icon' => 'sticky',
-      
-      // keywords by which to search for the block
-      'keywords' => array('featured', 'items'),
-      
-    ));
+    acf_register_block(array( // Slider 
     
-    /*
-    repeater fields with swiper
-    */
-    
-    acf_register_block(array(
-      
       // *required
       'name' => 'slider_section',
       'title' => 'Slider section',
-      
+    
       // the callback function
       'render_callback' => array($this, 'slider_section_render_callback'),
-      
+    
       // what block settings does this block allow
       'supports' => array(
-        'align' => true, 
+        'align' => array('full', 'wide', 'center', ''), 
         'align_text' => true, 
         'align_content' => true, 
         'full_height' => true, 
-        'mode' => false
+        // 'mode' => false
       ),
-      
+    
       // the defaults for various block settings
       'align' => 'full',
-      'align_text' => 'center', 
-      'align_content' => 'center', 
-      
-      // *optional
-      '__description' => '',
-      
+      'align_text' => 'center',
+      'align_content' => 'center',
+    
       // category & icon
       'category' => 'design',
       'icon' => 'slides',
-      
+    
       // keywords by which to search for the block
-      'keywords' => array('slider', 'section'),
-      
+      'keywords' => array('slider', 'section', 'rmcc'),
+    
     ));
     
-    acf_register_block(array(
-      
+    acf_register_block(array( // Testimonials 
+    
       // *required
-      'name' => 'testimonials',
-      'title' => 'Testimonials section',
-      
+      'name' => 'testimonials_section',
+      'title' => 'Testimonials & Ratings section',
+    
       // the callback function
-      'render_callback' => array($this, 'testimonials_render_callback'),
-      
+      'render_callback' => array($this, 'testimonials_section_render_callback'),
+    
+      // what block settings does this block allow
+      'supports' => array(
+        'align' => array('center'), 
+        'align_text' => true, 
+        'align_content' => false, 
+        'full_height' => false, 
+        // 'mode' => false
+      ),
+    
+      // the defaults for various block settings
+      'align' => 'center', 
+      'align_text' => 'center', 
+    
+      // category & icon
+      'category' => 'design',
+      'icon' => 'editor-quote',
+    
+      // keywords by which to search for the block
+      'keywords' => array('testimonials', 'rating', 'section', 'rmcc'),
+    
+    ));
+    
+    // /*
+    // Buttons
+    // */
+    
+    acf_register_block(array( // video popup button 
+    
+      // *required
+      'name' => 'video_popup_button',
+      'title' => 'Video popup button',
+    
+      // the callback function
+      'render_callback' => array($this, 'video_popup_button_render_callback'),
+    
       // what block settings does this block allow
       'supports' => array(
         'align' => false, 
         'align_text' => true, 
         'align_content' => false, 
         'full_height' => false, 
-        'mode' => false
+        // 'mode' => false
       ),
-      
+    
       // the defaults for various block settings
-      'align_text' => 'center', 
-      
-      // *optional
-      '__description' => 'A testimonials & rating carousel',
-      
+      'align_text' => 'center',
+    
       // category & icon
       'category' => 'design',
-      'icon' => 'editor-quote',
-      
+      'icon' => 'youtube',
+    
       // keywords by which to search for the block
-      'keywords' => array('testimonials', 'rating'),
-      
+      'keywords' => array('video', 'popup', 'button', 'rmcc'),
+    
     ));
     
-    /*
-    No acf fields used
-    */
+    acf_register_block(array( // gallery button 
     
-    // acf_register_block(array( // blog posts section 
-    // 
-    //   // *required
-    //   'name' => 'blog_posts',
-    //   'title' => 'Blog posts section',
-    // 
-    //   // the callback function
-    //   'render_callback' => array($this, 'blog_posts_render_callback'),
-    // 
-    //   // what block settings does this block allow
-    //   'supports' => array(
-    //     'align' => true, 
-    //     'align_text' => false, 
-    //     'align_content' => false, 
-    //     'full_height' => false, 
-    //     'mode' => false
-    //   ),
-    // 
-    //   // the defaults for various block settings
-    //   'align' => '',
-    // 
-    //   // *optional
-    //   '__description' => 'Requires some published posts.',
-    // 
-    //   // category & icon
-    //   'category' => 'design',
-    //   'icon' => 'list-view',
-    // 
-    //   // keywords by which to search for the block
-    //   'keywords' => array('blog', 'posts'),
-    // ));
+      // *required
+      'name' => 'gallery_button',
+      'title' => 'Gallery button',
+    
+      // the callback function
+      'render_callback' => array($this, 'gallery_button_render_callback'),
+    
+      // what block settings does this block allow
+      'supports' => array(
+        'align' => false, 
+        'align_text' => true, 
+        'align_content' => false, 
+        'full_height' => false, 
+        // 'mode' => false
+      ),
+    
+      // the defaults for various block settings
+      'align_text' => 'left',
+    
+      // category & icon
+      'category' => 'design',
+      'icon' => 'format-gallery',
+    
+      // keywords by which to search for the block
+      'keywords' => array('gallery', 'button', 'rmcc'),
+    
+    ));
+    
+    // /*
+    // Featured items - row
+    // */
+    
+    acf_register_block(array( // Featured items row section 
+    
+      // *required
+      'name' => 'featured_items_row',
+      'title' => 'Featured items row',
+    
+      // the callback function
+      'render_callback' => array($this, 'featured_items_row_render_callback'),
+    
+      // what block settings does this block allow
+      'supports' => array(
+        'align' => array('full', 'wide', ''), 
+        'align_text' => false, 
+        'align_content' => 'matrix', 
+        'full_height' => false, 
+        // 'mode' => false
+      ),
+    
+      // the defaults for various block settings
+      'align' => 'full',
+      'align_content' => 'center center',
+    
+      // category & icon
+      'category' => 'design',
+      'icon' => 'sticky',
+    
+      // keywords by which to search for the block
+      'keywords' => array('featured', 'items', 'row', 'rmcc'),
+    
+    ));
       
   }
 
@@ -517,17 +441,46 @@ class Blocks {
       '1.0.0',
       false
     );
+    
+    // preconnects
+    wp_enqueue_style('picsum-preconnect', 'https://picsum.photos', '', null);
+    wp_enqueue_style('lorem-picsum-preconnect', 'https://i.picsum.photos', '', null);
+    wp_enqueue_style('picsum-prefetch', 'https://picsum.photos', '', null);
+    wp_enqueue_style('lorem-picsum-prefetch', 'https://i.picsum.photos', '', null);
   
   }
   
-  // simple blocks
-  public function contact_section_render_callback($block, $content = '', $is_preview = false) {
+  public function preconnects_filter($html, $handle) {
+    if ($handle === 'picsum-preconnect') {
+      return str_replace("rel='stylesheet'",
+        "rel='preconnect'", $html);
+    }
+    if ($handle === 'lorem-picsum-preconnect') {
+      return str_replace("rel='stylesheet'",
+        "rel='preconnect'", $html);
+    }
+    if ($handle === 'picsum-prefetch') {
+      return str_replace("rel='stylesheet'",
+        "rel='dns-prefetch'", $html);
+    }
+    if ($handle === 'lorem-picsum-prefetch') {
+      return str_replace("rel='stylesheet'",
+        "rel='dns-prefetch'", $html);
+    }
+    return $html;
+  }
+  
+  /*
+  Sections (with inners)
+  */
+  
+  public function half_and_half_section_render_callback($block, $content = '', $is_preview = false) {
     $context = Timber::context();
     $context['block'] = $block;
     $context['fields'] = get_fields();
     $context['is_preview'] = $is_preview;
     
-    Timber::render('contact-section.twig', $context);
+    Timber::render('half-and-half-section.twig', $context);
   }
   public function cover_section_render_callback($block, $content = '', $is_preview = false) {
     $context = Timber::context();
@@ -545,40 +498,63 @@ class Blocks {
     
     Timber::render('cta-section.twig', $context);
   }
-  public function video_popup_section_render_callback($block, $content = '', $is_preview = false) {
+  public function highlight_card_section_render_callback($block, $content = '', $is_preview = false) {
     $context = Timber::context();
     $context['block'] = $block;
     $context['fields'] = get_fields();
     $context['is_preview'] = $is_preview;
     
-    Timber::render('video-section.twig', $context);
+    Timber::render('highlight-card-section.twig', $context);
   }
   
-  // layout: featured content on muted background
-  public function featured_gallery_render_callback($block, $content = '', $is_preview = false) {
+  /*
+  Swiper & Repeater sections
+  */
+  
+  public function slider_section_render_callback($block, $content = '', $is_preview = false) { 
+    $context = Timber::context();
+    $context['block'] = $block;
+    $context['fields'] = get_fields();
+    $context['is_preview'] = $is_preview;
+
+    Timber::render('slider-section.twig', $context);
+  }
+  public function testimonials_section_render_callback($block, $content = '', $is_preview = false) { 
     $context = Timber::context();
     $context['block'] = $block;
     $context['fields'] = get_fields();
     $context['is_preview'] = $is_preview;
     
-    Timber::render('featured-gallery-section.twig', $context);
+    Timber::render('testimonials-section.twig', $context);
   }
-  public function featured_content_render_callback($block, $content = '', $is_preview = false) { // 'select_post_object' -> $context['post'] 
+  
+  /*
+  Buttons
+  */
+  
+  public function gallery_button_render_callback($block, $content = '', $is_preview = false) {
     $context = Timber::context();
     $context['block'] = $block;
     $context['fields'] = get_fields();
     $context['is_preview'] = $is_preview;
   
-    // set the 'post' using the 'select_post_object', if it exists
-    if($context['fields'] && $context['fields']['select_post_object']){
-      $context['post'] = new Post($context['fields']['select_post_object']);
-    }
-  
-    Timber::render('featured-content-section.twig', $context);
+    Timber::render('gallery-button.twig', $context);
   }
   
-  // repeater
-  public function featured_items_render_callback($block, $content = '', $is_preview = false) { // 'featured_items' -> $context['items'] 
+  public function video_popup_button_render_callback($block, $content = '', $is_preview = false) {
+    $context = Timber::context();
+    $context['block'] = $block;
+    $context['fields'] = get_fields();
+    $context['is_preview'] = $is_preview;
+    
+    Timber::render('video-popup-button.twig', $context);
+  }
+  
+  /*
+  Featured items - row
+  */
+  
+  public function featured_items_row_render_callback($block, $content = '', $is_preview = false) { // 'featured_items' -> $context['items'] 
     $context = Timber::context();
     $context['block'] = $block;
     $context['fields'] = get_fields();
@@ -596,66 +572,48 @@ class Blocks {
       $context['items'] = $items;
     }
   
-    Timber::render('featured-items-section.twig', $context);
-  }
-  
-  // repeater with swiper
-  public function slider_section_render_callback($block, $content = '', $is_preview = false) { 
-    $context = Timber::context();
-    $context['block'] = $block;
-    $context['fields'] = get_fields();
-    $context['is_preview'] = $is_preview;
-
-    Timber::render('slider-section.twig', $context);
-  }
-  public function testimonials_render_callback($block, $content = '', $is_preview = false) { 
-    $context = Timber::context();
-    $context['block'] = $block;
-    $context['fields'] = get_fields();
-    $context['is_preview'] = $is_preview;
-    
-    Timber::render('testimonials-section.twig', $context);
+    Timber::render('featured-items-row-section.twig', $context);
   }
   
   // no ACF fields used. 2 posts arrays, first_posts & second_posts. uses stickies
-  public function blog_posts_render_callback($block, $content = '', $is_preview = false) {
-    $context = Timber::context();
-    $context['block'] = $block;
-    $context['fields'] = get_fields();
-    $context['is_preview'] = $is_preview;
-  
-    // get sticky posts before get_posts 
-    $sticky = get_option('sticky_posts');
-  
-    // the first post (sticky enabled)
-    $args1 = array(
-      'post_type' => 'post',
-      'post_status' => 'publish',
-      'posts_per_page' => '1',
-      'post__in'   => $sticky,
-      'ignore_sticky_posts' => 1,
-      'orderby' => 'date',
-      'order' => 'DESC',
-    );
-    $context['first_posts'] = new PostQuery($args1);
-  
-    // the 2nd and/or 3rd post/s (with stickies enabled)
-    $args2 = array(
-      'post_type' => 'post',
-      'post_status' => 'publish',
-      'posts_per_page' => '2',
-      'orderby' => 'date',
-      'order' => 'DESC',
-    );
-    if($sticky) {
-      $args2['post__not_in'] = $sticky;
-    } 
-    else {
-      $args2['offset'] = '1';
-    }
-    $context['second_posts'] = new PostQuery($args2);
-  
-    Timber::render('blog-posts-section.twig', $context);
-  }
+  // public function blog_posts_render_callback($block, $content = '', $is_preview = false) {
+  //   $context = Timber::context();
+  //   $context['block'] = $block;
+  //   $context['fields'] = get_fields();
+  //   $context['is_preview'] = $is_preview;
+  // 
+  //   // get sticky posts before get_posts 
+  //   $sticky = get_option('sticky_posts');
+  // 
+  //   // the first post (sticky enabled)
+  //   $args1 = array(
+  //     'post_type' => 'post',
+  //     'post_status' => 'publish',
+  //     'posts_per_page' => '1',
+  //     'post__in'   => $sticky,
+  //     'ignore_sticky_posts' => 1,
+  //     'orderby' => 'date',
+  //     'order' => 'DESC',
+  //   );
+  //   $context['first_posts'] = new PostQuery($args1);
+  // 
+  //   // the 2nd and/or 3rd post/s (with stickies enabled)
+  //   $args2 = array(
+  //     'post_type' => 'post',
+  //     'post_status' => 'publish',
+  //     'posts_per_page' => '2',
+  //     'orderby' => 'date',
+  //     'order' => 'DESC',
+  //   );
+  //   if($sticky) {
+  //     $args2['post__not_in'] = $sticky;
+  //   } 
+  //   else {
+  //     $args2['offset'] = '1';
+  //   }
+  //   $context['second_posts'] = new PostQuery($args2);
+  // 
+  //   Timber::render('blog-posts-section.twig', $context);
+  // }
 
 }

@@ -64,8 +64,8 @@
         
         {% if args.navigation %}
           navigation: {
-            nextEl: {{ args.navigation_nextele|default('.swiper-button-next') }},
-            prevEl: {{ args.navigation_prevele|default('.swiper-button-prev') }},
+            nextEl: '{{ args.navigation_nextele|default('.swiper-button-next') }}',
+            prevEl: '{{ args.navigation_prevele|default('.swiper-button-prev') }}',
           },
         {% endif %}
         

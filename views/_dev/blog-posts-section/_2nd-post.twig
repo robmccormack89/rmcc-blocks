@@ -1,8 +1,0 @@
-{% extends '_1st-post.twig' %}
-{% import "block-functions.twig" as block_functions %}
-
-{% block _inner_post_img %}
-  {# img #}
-  {% set img2 = post.thumbnail.src|resize(w, h)|default('https://picsum.photos/id/2/' ~ w ~ '/' ~ h) %}
-  {{ block_functions.block_img(is_preview, img2, post.thumbnail.alt, {w: w, h: h}) }} {# post img #}
-{% endblock %}

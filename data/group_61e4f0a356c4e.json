@@ -117,31 +117,6 @@
                     },
                     "default_value": "",
                     "placeholder": ""
-                },
-                {
-                    "key": "field_61e50b1f96f75",
-                    "label": "Fixed height",
-                    "name": "height",
-                    "type": "radio",
-                    "instructions": "The block's fullscreen toggle will override this setting.",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "small": "Small",
-                        "medium": "Medium",
-                        "large": "Large"
-                    },
-                    "allow_null": 1,
-                    "other_choice": 0,
-                    "default_value": "",
-                    "layout": "horizontal",
-                    "return_format": "value",
-                    "save_other_choice": 0
                 }
             ]
         }
@@ -164,5 +139,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1645443679
+    "modified": 1650596141
 }

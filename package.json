@@ -1,5 +1,5 @@
 {
-  "name": "rmcc-theme",
+  "name": "base-theme",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
+    "del": "^6.0.0",
     "autoprefixer": "^10.2.5",
     "cssnano": "^5.0.4",
     "expose-loader": "^1.0.0",
@@ -26,7 +27,6 @@
     "webpack-cli": "^4.8.0"
   },
   "scripts": {
-    "gulp": "./node_modules/.bin/gulp",
-    "twig-pot": "gulp pot"
+    "gulp": "./node_modules/.bin/gulp"
   }
 }
